@@ -1,0 +1,3 @@
+192.168.1.121 ctlnode ctlnode.kthw.me
+192.168.1.122 node-0 node-0.kthw.me 10.200.0.0/24
+192.168.1.123 node-1 node-1.kthw.me 10.200.1.0/24

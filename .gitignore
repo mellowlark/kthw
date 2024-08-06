@@ -1,0 +1,8 @@
+encryption-config.yaml
+*.crt
+*.key
+*.csr
+*.kubeconfig
+*.swp
+*.cert
+*.pem

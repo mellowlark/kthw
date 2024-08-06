@@ -1,0 +1,97 @@
+# local directory variables
+certdir=/home/jimmy/kthw/certs
+kubecfgdir=/home/jimmy/kthw/authconfigs
+cfgfiles=/home/jimmy/kthw/configs
+services=/home/jimmy/kthw/services
+binaries=/home/jimmy/kthw/bin
+
+
+#########
+# Nodes #
+#########
+for host in node-0 node-1; do
+# section 04 files
+  ssh $host sudo "mkdir /var/lib/{kube-proxy,kubelet}
+  scp ${certdir}/ca.crt root@$host:/var/lib/kubelet/
+  scp ${certdir}/$host.crt \
+    root@$host:/var/lib/kubelet/kubelet.crt
+  scp ${certdir}/$host.key \
+    root@$host:/var/lib/kubelet/kubelet.key
+# section 05 files
+  scp ${kubecfgdir}/kube-proxy.kubeconfig \
+    root@$host:/var/lib/kube-proxy/kubeconfig \
+  scp ${kubecfgdir}/${host}.kubeconfig \
+    root@$host:/var/lib/kubelet/kubeconfig
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###########
+# Ctlnode #
+###########
+# make directories:
+ssh root@ctlnode mkdir -p \
+  /var/lib/kubernetes \
+  /etc/etcd /var/lib/etcd \
+  /etc/kubernetes/config 
+ssh root@ctlnode cmod 700 /var/lib/etcd
+ssh ctlnode mkdir supportfiles
+
+# Copy files by destination directory
+# /usr/local/bin
+scp
+  ${binaries}/kube-apiserver\
+  ${binaries}/kube-conrol-manager \
+  ${binaries}/kube-scheduler \
+  ${binaries}/kubectl \
+  root@ctlnode:/usr/local/bin
+ssh root@ctlnode chmod +x /usr/local/bin/kube*
+
+# /var/lib/kubernetes
+scp \
+  ${certdir}/ca.key ${certdir}/ca.crt \
+  ${certdir}/kube-api-server.key ${certdir}/kube-api-server.crt \
+  ${certdir}/service-accounts.key ${certdir}/service-accounts.crt \
+  ${cfgfiles}/encryption-config.yaml \
+  ${kubecfgdir}/kube-controller-manager.kubeconfig \
+  ${kubecfgdir}/kube-scheduler.kubeconfig \
+  root@ctlnode:/var/lib/kubernetes
+
+# /etc/kubernetes/config
+scp \
+  ${cfgfiles}/kube-scheduler.yaml \
+  root@ctlnode:/etc/kubernetes/config
+
+# /etc/systemd/system
+scp \
+  ${services}/etcd.service \
+  ${services}/kube-apiserver.service \
+  ${services}/kube-controller-manager.service \
+  ${services}/kube-scheduler.service \
+  root@ctlnode:/etc/systemd/system
+
+# /home/###/supportfiles
+scp \
+  ${kubecfgdir}/admin.kubeconfig \
+  ${cfgfiles}/kube-apiserver-to-kubelet.yaml \
+  ${binaries}/etcd.tar.gz \
+  ctlnode:/home/jimmy/supportfiles/
+
+

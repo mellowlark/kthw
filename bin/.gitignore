@@ -1,0 +1,13 @@
+cni-plugins.tgz
+containerd.tar.gz
+crictl.tar.gz
+etcd
+etcdctl
+etcdutl
+kube-apiserver
+kube-controller-manager
+kube-proxy
+kube-scheduler
+kubectl
+kubelet
+runc
