@@ -1,1 +1,1 @@
-CA Directory 
+Directory for storing generated CA files

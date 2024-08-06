@@ -1,1 +1,1 @@
-Kubeconfigs Directory 
+Generated kubeconfig files will be stored here

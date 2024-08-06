@@ -1,1 +1,1 @@
-Folder to store binary files
+Folder to store binary files downloaded using downloads.txt
